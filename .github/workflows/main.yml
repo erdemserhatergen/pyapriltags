@@ -44,6 +44,9 @@ jobs:
           run: |
             echo "GITHUB_REF: $GITHUB_REF"
             echo "Extracted TAG_NAME: ${{ steps.extract_tag.outputs.tag_name }}"
+
+        - name: List contents of dist directory
+          run: ls -l ./dist
     
         - name: Create Release
           id: create_release
@@ -56,12 +59,19 @@ jobs:
             draft: false
             prerelease: false
 
+        - name: Find wheel file
+          id: find_wheel
+          run: |
+            echo "WHEEL_PATH=$(ls ./dist/*.whl)" 
+            echo "WHEEL_PATH=${WHEEL_PATH}" >> $GITHUB_ENV
+
+
         - name: Upload Release Asset
           uses: actions/upload-release-asset@v1
           env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           with:
             upload_url: ${{ steps.create_release.outputs.upload_url }} # This is the upload URL for the created release
-            asset_path: ./dist/pyapriltags-VERSION-py3-none-ARCH.whl  # Specify the path to your wheel file. Adjust VERSION and ARCH accordingly.
-            asset_name: pyapriltags-VERSION-py3-none-ARCH.whl  # The name of the asset as it will appear on GitHub
+            asset_path: ${{ env.WHEEL_PATH }}
+            asset_name: ${{ env.WHEEL_PATH }}
             asset_content_type: application/octet-stream
