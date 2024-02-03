@@ -1,0 +1,31 @@
+name: Build and Release
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: 'recursive'
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x' # Specify the Python version you need
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y make
+
+    - name: Build
+      run: make build
+
+    - name: Upload
+      run: make upload
+
+    - name: Release
+      run: make release-all
