@@ -51,8 +51,8 @@ jobs:
           env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           with:
-            tag_name: ${{ steps.extract_tag.outputs.tag_name }}
-            release_name: Release ${{ steps.extract_tag.outputs.tag_name }}
+            tag_name: 'v0.1.1'
+            release_name: "Release v0.1.1"
             draft: false
             prerelease: false
 
