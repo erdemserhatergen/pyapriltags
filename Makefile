@@ -10,11 +10,10 @@ build:
 	# create wheel destination directory
 	mkdir -p ${ROOT}/dist
 	# build wheel
-	docker run \
-		-it --rm \
-		-v ${ROOT}:/apriltag \
-		-v ${ROOT}/dist:/out \
-		pyapriltags:wheel-python3
+	docker run --rm \
+    		-v /home/runner/work/pyapriltags/pyapriltags/:/apriltag \
+    		-v /home/runner/work/pyapriltags/pyapriltags//dist:/out \
+    		pyapriltags:wheel-python3
 
 upload:
 	twine upload ${ROOT}/dist/*
